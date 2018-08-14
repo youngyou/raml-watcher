@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Raml Watcher</title>
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+  <script>
+    window.Polymer = { dom: 'shadow' };
+    if (!window.HTMLImports) {
+      document.dispatchEvent(new CustomEvent('WebComponentsReady', { bubbles: true }));
+    }
+  </script>
+  <link rel="import" href="bower_components/api-console/api-console.html">
+</head>
+
+<body>
+  <api-console no-attribution></api-console>
+  <script src="static/watcher.js"></script>
+</body>
+
+</html>

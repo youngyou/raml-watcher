@@ -1,0 +1,21 @@
+{
+  "name": "raml-watcher",
+  "description": "raml dev server",
+  "main": "index.js",
+  "authors": [
+    "Keyon U <youngyou.name@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "api-console": "^4.2.1",
+    "polymer": "^3.0.5"
+  }
+}
