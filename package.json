@@ -1,6 +1,6 @@
 {
   "name": "raml-watcher",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "raml dev server",
   "main": "index.js",
   "bin": "bin/cli.js",
