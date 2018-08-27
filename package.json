@@ -22,8 +22,7 @@
     "koa": "^2.5.2",
     "koa-mount": "^3.0.0",
     "koa-static": "^5.0.0",
-    "raml-1-parser": "^1.1.45",
-    "raml2obj": "^6.0.0",
+    "raml-json-enhance-node": "^0.3.2",
     "ws": "^6.0.0"
   },
   "files": [

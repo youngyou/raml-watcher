@@ -1,42 +1,25 @@
 const fs = require('fs-extra');
 const path = require('path');
-const parser = require('raml-1-parser');
-const arcRaml2obj = require('raml2obj');
 const Koa = require('koa');
 const static = require('koa-static');
 const WebSocket = require('ws');
 const chokidar = require('chokidar');
 const mount = require('koa-mount');
-
-function parse(file) {
-    return parser.loadApi(file)
-        .then(api => {
-            if ('expand' in api) {
-                api = api.expand(true);
-            }
-            let json = api.toJSON({
-                dumpSchemaContents: false,
-                rootNodeDetails: true,
-                serializeMetadata: false
-            });
-            let namespace = json.type;
-            json = json.specification;
-            json.namespace = namespace;
-            return json;
-        })
-        .then(json => arcRaml2obj.parse({ json }))
-        .then(data => data.json);
-}
+const { RamlJsonGenerator } = require('raml-json-enhance-node');
 
 function watch(file, cb) {
+    const enhancer = new RamlJsonGenerator(file, {
+        prettyPrint: true
+    });
     function fire(data) {
         cb(JSON.stringify(data));
     }
     function compile() {
         fire({ payload: 'loading' });
         console.log('Generating JSON.');
-        return parse(file).then(data => {
+        return enhancer.generate().then(data => {
             console.log('Generate Finished.');
+            console.log(JSON.stringify(data, '', '  '))
             fire({ payload: 'raml', data });
         }).catch(err => {
             fire({ payload: 'error', message: err.message });
@@ -78,8 +61,10 @@ module.exports = serve;
 
 function build(file, target = 'build') {
     const copyFiles = fs.copy(path.join(__dirname, 'build', 'default'), target);
-    const compile = parse(file);
-    Promise.all([compile, copyFiles]).then(([data]) => {
+    const compile = new RamlJsonGenerator(file, {
+        prettyPrint: true
+    }).generate();
+    return Promise.all([compile, copyFiles]).then(([data]) => {
         const content = `
         window.addEventListener('WebComponentsReady', function () {
             document.title = "${data.title}";
